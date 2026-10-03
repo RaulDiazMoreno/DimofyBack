@@ -428,7 +428,7 @@ public class AlbumsController {
 	     Pageable pageable = PageRequest.of(
 	             safePage,
 	             safeSize,
-	             Sort.by(Sort.Order.desc("anyo"), Sort.Order.asc("titulo"))
+	             Sort.by(Sort.Order.asc("anyo"), Sort.Order.asc("titulo"))
 	     );
 	     return ResponseEntity.ok(albumService.buscarAlbumsPorArtistaPaginados(idArtista, pageable));
 	 }

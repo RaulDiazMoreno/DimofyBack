@@ -10,6 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -77,6 +81,24 @@ public class ArtistaController {
 	    return ResponseEntity.ok(resultado);
 	}
 
+	@GetMapping("/iniciales")
+	public ResponseEntity<List<String>> obtenerInicialesDisponibles() {
+		return ResponseEntity.ok(artistaService.obtenerInicialesDisponibles());
+	}
+
+	@GetMapping("/inicial/{inicial}")
+	public ResponseEntity<Page<Artista>> buscarArtistasPorInicial(
+			@PathVariable String inicial,
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "12") int size) {
+		String safeInicial = inicial == null ? "" : inicial.trim();
+		if (safeInicial.isEmpty()) return ResponseEntity.badRequest().build();
+		int safePage = Math.max(0, page);
+		int safeSize = Math.min(Math.max(1, size), 12);
+		Pageable pageable = PageRequest.of(safePage, safeSize, Sort.by("nombre").ascending());
+		return ResponseEntity.ok(artistaService.buscarPorInicial(safeInicial.substring(0, 1), pageable));
+	}
+
 	@PostMapping("/crear")
     public ResponseEntity<?> crearArtista(
             @RequestParam("titulo") String titulo,
@@ -129,7 +151,7 @@ public class ArtistaController {
 	        mapper.writeValue(file, resultados);
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/{id:\\d+}")
 	 public ResponseEntity<Artista> getArtistaById(@PathVariable Long id) {
 	
 		     Optional<Artista> optionalArtista = artistaService.findById(id);

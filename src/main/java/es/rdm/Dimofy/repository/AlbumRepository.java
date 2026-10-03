@@ -32,7 +32,7 @@ public interface AlbumRepository extends JpaRepository<Album, Long>, AlbumReposi
 	@Query("SELECT a FROM Album a WHERE LOWER(a.titulo) = LOWER(:titulo) AND a.artista.idArtista = :idArtista")
 	Optional<Album> findByTituloAndArtistaId(@Param("titulo") String titulo, @Param("idArtista") Long idArtista);
 
-	List<Album> findByArtista_IdArtistaOrderByAnyoDescTituloAsc(Long idArtista);
+	List<Album> findByArtista_IdArtistaOrderByAnyoAscTituloAsc(Long idArtista);
 	
 	List<Album> findByGenero_IdGenero(Long idGenero);
 

@@ -493,7 +493,7 @@ public class AlbumService {
 	}
 
 	public List<Album> findByArtistaId(Long idArtista) {
-	    return albumRepository.findByArtista_IdArtistaOrderByAnyoDescTituloAsc(idArtista);
+	    return albumRepository.findByArtista_IdArtistaOrderByAnyoAscTituloAsc(idArtista);
 	}
 
 	public Page<AlbumDTO> buscarAlbumsPorGenero(Long idGenero, Pageable pageable) {

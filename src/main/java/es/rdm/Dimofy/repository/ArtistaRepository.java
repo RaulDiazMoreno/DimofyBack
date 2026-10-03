@@ -2,6 +2,8 @@ package es.rdm.Dimofy.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -32,5 +34,13 @@ public interface ArtistaRepository extends JpaRepository<Artista, Long>,ArtistaR
 	@Query("SELECT a.nombre, COUNT(al) FROM Album al JOIN al.artista a "
 			+ "GROUP BY a.id, a.nombre ORDER BY COUNT(al) DESC, a.nombre ASC")
 	List<Object[]> contarAlbumsPorArtista();
+
+	@Query("SELECT DISTINCT UPPER(SUBSTRING(TRIM(a.nombre), 1, 1)) FROM Artista a "
+			+ "WHERE a.nombre IS NOT NULL AND TRIM(a.nombre) <> '' "
+			+ "ORDER BY UPPER(SUBSTRING(TRIM(a.nombre), 1, 1))")
+	List<String> obtenerInicialesDisponibles();
+
+	@Query("SELECT a FROM Artista a WHERE UPPER(a.nombre) LIKE CONCAT(UPPER(:inicial), '%') ORDER BY a.nombre ASC")
+	Page<Artista> buscarPorInicial(@Param("inicial") String inicial, Pageable pageable);
 
 }

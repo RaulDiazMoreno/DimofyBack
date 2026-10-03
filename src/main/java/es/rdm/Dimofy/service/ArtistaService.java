@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,6 +67,14 @@ public class ArtistaService {
 	public List<Artista> buscarArtistas(String artista, Integer anyo, String pais, String genero) {
 		
 			return artistaRepository.buscarPorFiltros(artista, anyo, pais,genero);
+	}
+
+	public List<String> obtenerInicialesDisponibles() {
+		return artistaRepository.obtenerInicialesDisponibles().stream().sorted().toList();
+	}
+
+	public Page<Artista> buscarPorInicial(String inicial, Pageable pageable) {
+		return artistaRepository.buscarPorInicial(inicial, pageable);
 	}
 
 	public void grabar(Artista artista) {
