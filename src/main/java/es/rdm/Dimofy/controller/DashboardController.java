@@ -13,6 +13,7 @@ import es.rdm.Dimofy.dto.AlbumDTO;
 import es.rdm.Dimofy.dto.ArtistaDashboardDTO;
 import es.rdm.Dimofy.dto.EstadisticaDashboardDTO;
 import es.rdm.Dimofy.dto.ListaDashboardDTO;
+import es.rdm.Dimofy.dto.PaisMapaDashboardDTO;
 import es.rdm.Dimofy.dto.GraficaDashboardDTO;
 import es.rdm.Dimofy.repository.Listas;
 import es.rdm.Dimofy.service.RecomendacionService;
@@ -77,6 +78,11 @@ public class DashboardController {
     @GetMapping("/graficas/albums-por-anyo")
     public ResponseEntity<List<GraficaDashboardDTO>> albumsPorAnyo() {
         return ResponseEntity.ok(recomendacionService.albumsUltimosDiezAnyos());
+    }
+
+    @GetMapping("/graficas/mapa-paises")
+    public ResponseEntity<List<PaisMapaDashboardDTO>> mapaPaises() {
+        return ResponseEntity.ok(recomendacionService.mapaPaisesArtistas());
     }
 
     @GetMapping("/graficas/top-paises")

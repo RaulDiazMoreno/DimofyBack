@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import es.rdm.Dimofy.dto.PaisMapaDashboardDTO;
 import es.rdm.Dimofy.dto.AlbumDTO;
 import es.rdm.Dimofy.dto.ArtistaDashboardDTO;
 import es.rdm.Dimofy.dto.GraficaDashboardDTO;
@@ -120,6 +121,14 @@ public class RecomendacionService {
             result.add(new GraficaDashboardDTO(String.valueOf(anyo), porAnyo.getOrDefault(anyo, 0L)));
         }
         return result;
+    }
+
+    public List<PaisMapaDashboardDTO> mapaPaisesArtistas() {
+        return artistaRepository.contarArtistasPorPais().stream()
+            .map(r -> new PaisMapaDashboardDTO(
+                String.valueOf(r[0]),
+                ((Number) r[1]).longValue()))
+            .toList();
     }
 
     public List<GraficaDashboardDTO> topDiezPaisesArtistas() {
